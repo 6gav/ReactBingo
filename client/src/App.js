@@ -1,25 +1,23 @@
 import React, { Component } from 'react';
 import './App.css';
-import { connectToSocket, disconnectFromServer } from './api';
+import {Switch, Route} from 'react-router-dom';
+import Home from './components/Home.js';
 
 class App extends Component {
 
-  constructor(props){
-    super(props)
-    connectToSocket((err, testVals) => console.log(testVals));
-  }
-
-  componentWillUnmount(){
-    disconnectFromServer();
-  }
 
   render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <p></p>
-        </header>
+    const App = () => (
+      <div>
+        <Switch>
+          <Route exact path='/' component={Home}/>
+        </Switch>
       </div>
+    );
+    return (
+      <Switch>
+        <App/>
+      </Switch>
     );
   }
 }
