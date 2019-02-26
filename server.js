@@ -59,13 +59,20 @@ app.post('/api/StartGame', (req, res) => {
         gameId = Math.floor(Math.random() * 10);
     }while(GameList[gameId])
 
-    GameList[gameId] = {Host: req.body.userId};
+    GameList[gameId] = {Host: req.body.userId, PlayerList: []};
+    GameList[gameId].PlayerList.push({userId: req.body.userId});
 
     console.log('Game with id ' + gameId + ' hosted by ' + req.body.userId + ' started.');
     res.send({statusCode: 0, gameId: gameId});
 
 });
 
+
+app.post('/api/GetGameInfo', (req, res) => {
+    console.log(req.body);
+    console.log(GameList[req.body.gameId]);
+    res.send({PlayerList: GameList[req.body.gameId].PlayerList});
+});
 
 
 //End REST
