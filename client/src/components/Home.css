@@ -1,0 +1,15 @@
+td{
+    text-align: center;
+}
+
+.BingoButton{
+    width: 5em;
+    height: 5em;
+    border: none;
+    display: inline-block;
+
+}
+
+.BingoButton:active{
+    background-color: green;
+}
