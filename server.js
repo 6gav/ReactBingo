@@ -44,11 +44,19 @@ app.post('/api/JoinGame', (req, res) => {
     if(!GameList[gameId]){
         console.log(gameId + " does not exist!");
         res.send({error: 'Game does not exist', errorCode: 404});
+        return;
     }
-    else{
-        console.log(GameList[gameId]);
-        res.send({error: 'Accepted', errorCode: 0});
+    console.log(GameList[gameId]);
+    res.send({error: 'Accepted', errorCode: 0});
+    var list = GameList[gameId].PlayerList;
+    for(var i = 0; i < list.length; i++){
+        if(list[i].userId == req.body.userId)
+        {
+            console.log('In the list already');
+            return;
+        }
     }
+    GameList[gameId].PlayerList.push({userId: req.body.userId});
 
 });
 
@@ -70,9 +78,15 @@ app.post('/api/StartGame', (req, res) => {
 
 app.post('/api/GetGameInfo', (req, res) => {
     console.log(req.body);
-    console.log(GameList[req.body.gameId]);
+    var game = GameList[req.body.gameId];
+    if(!game){
+        res.send({PlayerList: []});
+    }
     res.send({PlayerList: GameList[req.body.gameId].PlayerList});
 });
+
+
+
 
 
 //End REST

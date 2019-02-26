@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Sleep} from './Utility.js';
+import './Game.css';
 
 class Game extends Component {
 
@@ -32,6 +32,7 @@ class Game extends Component {
         .then(response => response.json())
         .then(response => {
             console.log(response);
+            this.setState({playerList: response.PlayerList});
         });
     }
 
@@ -39,9 +40,28 @@ class Game extends Component {
         return (
             <div>
                 <p>Game id: {this.state.gameId}</p>
+                <PlayerList list={this.state.playerList}/>
             </div>
         );
     }
+}
+
+function PlayerList(props){
+    var listItem = null;
+    
+    if(!props.list){
+        return null;
+    }
+
+    console.log(props.list);
+
+    var listOfUsers = [];
+
+    for(var i = 0; i < props.list.length; i++){
+        listOfUsers.push(<p key={i}>{props.list[0].userId}</p>);
+    }
+
+    return <ul className='User-List'>{listOfUsers}</ul>;
 }
 
 export default Game;

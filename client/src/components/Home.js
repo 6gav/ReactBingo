@@ -39,7 +39,7 @@ class Home extends Component{
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({gameId: this.state.gameId}),
+            body: JSON.stringify({gameId: this.state.gameId, userId: this.state.userId}),
         })
         .then(response => response.json())
         .then(response => {
