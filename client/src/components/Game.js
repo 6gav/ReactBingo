@@ -5,6 +5,7 @@ class Game extends Component {
 
     state ={
         gameId: null,
+        userId: null,
     }
 
     constructor(props){
@@ -16,23 +17,36 @@ class Game extends Component {
     componentDidMount(){
         var gameId = parseInt(this.props.match.params.id);
 
-        this.setState({gameId: gameId});
-        this.GetGameInfo(gameId);
+        var userId = localStorage.getItem('userId');
+
+        this.setState({gameId: gameId, userId: userId});
+        this.GetGameInfo(gameId, userId);
     }
 
-    GetGameInfo(id){
-        
+    GetGameInfo(gameId, userId){
         fetch('/api/GetGameInfo', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 },
-            body: JSON.stringify({gameId: id}),
+            body: JSON.stringify({gameId: gameId}),
         })
         .then(response => response.json())
         .then(response => {
             console.log(response);
             this.setState({playerList: response.PlayerList});
+        });
+
+        fetch('/api/GetGameBoard', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+                },
+            body: JSON.stringify({userId: userId, gameId: gameId}),
+        })
+        .then(response => response.json())
+        .then(response => {
+            console.log(response);
         });
     }
 
@@ -50,10 +64,8 @@ function PlayerList(props){
     var listItem = null;
     
     if(!props.list){
-        return null;
+        return listItem;
     }
-
-    console.log(props.list);
 
     var listOfUsers = [];
 
@@ -61,7 +73,10 @@ function PlayerList(props){
         listOfUsers.push(<p key={i}>{props.list[0].userId}</p>);
     }
 
-    return <ul className='User-List'>{listOfUsers}</ul>;
+    return (<ul className='User-List'>
+    <h3>Player list: </h3>
+    {listOfUsers}
+    </ul>);
 }
 
 export default Game;

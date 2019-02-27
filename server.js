@@ -64,7 +64,7 @@ app.post('/api/StartGame', (req, res) => {
 
     var gameId;
     do{
-        gameId = Math.floor(Math.random() * 10);
+        gameId = Math.floor(Math.random() * 9000 + 1000)    ;
     }while(GameList[gameId])
 
     GameList[gameId] = {Host: req.body.userId, PlayerList: []};
@@ -77,16 +77,30 @@ app.post('/api/StartGame', (req, res) => {
 
 
 app.post('/api/GetGameInfo', (req, res) => {
+    
     console.log(req.body);
     var game = GameList[req.body.gameId];
     if(!game){
         res.send({PlayerList: []});
+        return;
     }
     res.send({PlayerList: GameList[req.body.gameId].PlayerList});
 });
 
+app.post('/api/GetGameBoard', (req, res) => {
+    console.log('Game board request from ');
+    console.log(req.body);
 
+    if(GameList[req.body.gameId]){
 
+    }
+
+    res.send({board: 'Game'});
+});
+
+app.get('/api/GetGameList', (req, res) => {
+   res.send({games: GameList}); 
+});
 
 
 //End REST
